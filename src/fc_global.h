@@ -11,8 +11,8 @@
 #define _FC_GLOBAL_H
 
 // Version strings.
-#define FC_VERSION       "V0.34"
-#define FC_VERSION_EXTRA "JUL112023"
+#define FC_VERSION       "V0.35"
+#define FC_VERSION_EXTRA "JUL222023"
 
 #define FC_DBG              // debug output on Serial
 
@@ -44,7 +44,7 @@
 
 // Use SPIFFS (if defined) or LittleFS (if undefined; esp32-arduino >= 2.x)
 // For now, I stick with SPIFFS.
-//#define USE_SPIFFS
+#define USE_SPIFFS
 
 // External time travel lead time, as defined by TCD firmware
 #define ETTO_LEAD 5000
