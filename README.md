@@ -1,6 +1,8 @@
 # Firmware for Flux Capacitor
 
-This repository holds the most current firmware for CircuitSetup's wonderful Flux Capacitor kit.
+This repository holds the most current firmware for CircuitSetup's excellent [Flux Capacitor kit](https://circuitsetup.us).
+
+![fMy Flux Capacitor](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/ad197e19-fa48-463a-9231-7e05d6362329)
 
 The kit is (or will be) available [here](https://circuitsetup.us) and is built around a NodeMCU ESP32-S dev board.
 
@@ -271,11 +273,11 @@ The different modes are selected by typing *00 (disabled), *01 (enabled), *02 (e
 
 ## Box lighting
 
-The FC features connectors for box lights, ie LEDs that light up the inside of the FC during the time travel sequence. Those should be installed, they are essential part of the time travel sequence. 
+The FC features connectors for box lights, ie LEDs that light up the inside of the FC during the time travel sequence. Those should be installed, they are essential part of the time travel sequence. The kit from CircuitSetup will probably contain suitable high-power LEDs for box lighting, and all four of those need to be connected to the "Box LED" connectors. 
+
+As an alternative, one could use four pieces of 3W High-Power KEYES LED modules and drive them via the GPIO14 connector. As those draw quite much power, their power pins should therefore be connected to the power supply directly, and only the PWD input should be wired to the "IO14" pin of the "GPIO14" connector. If you use the GPIO14 connector for your box LEDs, check [this option](#-use-gpio14-for-box-lights).
 
 In normal operation, those LEDs are off. You can, however, configure a minimum box light level to light up the box a little bit if you find it too dark. This level can be chosen out of five, by entering *10 through *14 followed by OK.
-
-I used four pieces of 3W High-Power KEYES LED modules, mounted in the four corners of the main box. Since those draw quite much power, they are connected to the power supply directly, only their PWD input is wired the FC PCB, to be exact to the "IO14" pin of the "GPIO14" connector, while [this option](#-use-gpio14-for-box-lights) is checked.
 
 ## Time travel
 
@@ -315,7 +317,7 @@ The firmware supports some additional user-provided sound effects, which it will
 
 - "key3.mp3" and/or "key6.mp3": Will be played if you press the "3"/"6" button on your remote
 
-Those files are not provided here. You can use any mp3, with 128kpbs or less.
+Those files are not provided here. You can use any mp3, with a bitrate of 128kpbs or less.
 
 ## The Music Player
 
@@ -323,9 +325,9 @@ The firmware contains a simple music player to play mp3 files located on the SD 
 
 In order to be recognized, your mp3 files need to be organized in music folders named *music0* through *music9*. The folder number is 0 by default, ie the player starts searching for music in folder *music0*. This folder number can be changed using the remote control.
 
-The names of the audio files must only consist of three-digit numbers, starting at 000.mp3, in consecutive order. No numbers should be left out. Each folder can hold 1000 files (000.mp3-999.mp3). *The maximum bitrate is 128kpbs.*
+The names of the audio files must only consist of three-digit numbers, starting at 000.mp3, in consecutive order. No numbers should be left out. Each folder can hold up to 1000 files (000.mp3-999.mp3). *The maximum bitrate is 128kpbs.*
 
-The firmware can automatically rename audio files in the music folders. Just copy your files with their original filenames to the music folder, instead of manually renaming them to eg. "000.mp3". Upon boot or upon selecting a folder containing such files, they will be renamed following the 3-digit name scheme (in alphabetic order). You can also add files to a music folder later, they will be renamed properly; when you do so, delete the file "TCD_DONE.TXT" from the music folder on the SD card so that the firmware knows that something has changed. The renaming process can take a while (10 minutes for 1000 files in bad cases). Mac users are advised to delete the ._ files from the SD before putting it back into the FC as this speeds up the process.
+Since manually renaming mp3 files is somewhat cumbersome, the firmware can do this for you - provided you can live with the files being sorted in alphabetical order: Just copy your files with their original filenames to the music folder; upon boot or upon selecting a folder containing such files, they will be renamed following the 3-digit name scheme (as mentioned: in alphabetic order). You can also add files to a music folder later, they will be renamed properly; when you do so, delete the file "TCD_DONE.TXT" from the music folder on the SD card so that the firmware knows that something has changed. The renaming process can take a while (10 minutes for 1000 files in bad cases). Mac users are advised to delete the ._ files from the SD before putting it back into the FC as this speeds up the process.
 
 To start and stop music playback, press 5 on your remote. Pressing 2 jumps to the previous song, pressing 8 to the next one.
 
@@ -390,7 +392,6 @@ If both TCD and FC are connected to the same broker, and the option *Send event 
 ![MQTT connection](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/938c6bdd-f554-4e51-862e-9988e2339222)
 
 MQTT and BTTFN can co-exist. However, the TCD only sends out time travel and alarm notifications through either MQTT or BTTFN, never both. If you have other MQTT-aware devices listening to the TCD's public topic (bttf/tcd/pub) in order to react to time travel or alarm messages, use MQTT (ie check *Send event notifications*). If only BTTFN-aware devices are to be used, uncheck this option to use BTTFN as it has less latency.
-
 
 ## Home Assistant / MQTT
 
@@ -508,7 +509,7 @@ Number of seconds before a timeout occurs when connecting to a WiFi network. Whe
 
 ##### &#9654; TCD connected by wire
 
-Check this if you have a Time Circuits Display connected by wire. Note that you can only connect *either* a button *or* the TCD to the "time travel" connector on the FC, but not both.
+Check this if you have a Time Circuits Display connected by wire. You can only connect *either* a button *or* the TCD to the "time travel" connector on the FC, but not both.
 
 Note that a wired connection only allows for synchronized time travel sequences, no other communication takes place.
 
