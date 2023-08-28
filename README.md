@@ -2,9 +2,9 @@
 
 This repository holds the most current firmware for CircuitSetup's excellent [Flux Capacitor kit](https://circuitsetup.us).
 
-![fMy Flux Capacitor](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/ad197e19-fa48-463a-9231-7e05d6362329)
+The kit is available [here](https://circuitsetup.us).
 
-The kit is (or will be) available [here](https://circuitsetup.us) and is built around a NodeMCU ESP32-S dev board.
+![fMy Flux Capacitor](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/ad197e19-fa48-463a-9231-7e05d6362329)
 
 Features include
 - movie-accurate default flux sequence, plus 9 alternative flux sequences
@@ -14,7 +14,7 @@ Features include
 - [Music player](#the-music-player): Play mp3 files located on an SD card
 - [SD card](#sd-card) support for custom audio files for effects, and music for the Music Player
 - Advanced network-accessible [Config Portal](#the-config-portal) for setup with mDNS support for easy access (http://flux.local, hostname configurable)
-- Wireless communication with Time Circuits Display ("[BTTF-Network](#bttf-network-bttfn)"); used for synchonized time travels, alarm, chase speed, night mode, fake power
+- Wireless communication ("[BTTF-Network](#bttf-network-bttfn)") with [Time Circuits Display](https://github.com/realA10001986/Time-Circuits-Display/); used for synchonized time travels, alarm, chase speed, night mode, fake power
 - [Home Assistant](#home-assistant--mqtt) (MQTT 3.1.1) support
 - Built-in installer for default audio files in addition to OTA firmware updates
 
@@ -51,27 +51,11 @@ As long as the device is unconfigured, as is the case with a brand new Flux Capa
 - Connect your computer or handheld device to the WiFi network "FC-AP".
 - Navigate your browser to http://flux.local or http://192.168.4.1 to enter the Config Portal.
  
-If you want your Flux Capacitor to connect to your WiFi network, click on "Configure WiFi". The bare minimum is to select an SSID (WiFi network name) and a WiFi password. Note that the device requests an IP address via DHCP, unless you entered valid data in the fields for static IP addresses (IP, gateway, netmask, DNS). After saving the WiFi network settings, the device reboots and tries to connect to your configured WiFi network. If that fails, it will again start in access point mode.
+If you want your Flux Capacitor to connect to another access point, such as your WiFi network, click on "Configure WiFi". The bare minimum is to select an SSID (WiFi network name) and a WiFi password.
 
-If the device is inaccessible as a result of wrong static IPs, wait until the Flux Capacitor has completed its startup sequence, then type \*123456OK on the IR remote; static IP data will be deleted and the device will return to DHCP.
+Note that the device requests an IP address via DHCP, unless you entered valid data in the fields for static IP addresses (IP, gateway, netmask, DNS). After saving the WiFi network settings, the device reboots and tries to connect to your configured WiFi network. If that fails, it will again start in access point mode. If the device is inaccessible as a result of incorrect static IPs, wait until the Flux Capacitor has completed its startup sequence, then type \*123456OK on the IR remote; static IP data will be deleted and the device will return to DHCP.
 
-### Car setup
-
-If your FC, along with a [Time Circuits Display](https://github.com/realA10001986/Time-Circuits-Display/), is mounted in a car, the following network configuration is recommended:
-
-- Run your TCD in AP mode; disable WiFi power-saving on the TCD by setting *WiFi power save timer (AP-mode)* to 0 (zero).
-- Enter the Config Portal on the FC (as described above), click on *Setup* and
-  - enter *192.168.4.1* into the field *IP address of TCD*
-  - check the option *Wait for TCD-WiFi*
-  - click on *Save*.
-- After the FC has restarted, re-enter the FC's Config Portal (while the TCD is powered) and
-  - click on *Configure WiFi*,
-  - enter *TCD-AP* into the *SSID* field; leave all other fields empty
-  - click on *Save*.
-
-Using this configuration enables the FC to receive notifications about time travel and alarm wirelessly, and to query the TCD for data.
-
-In this setup, in order to access the FC's Config Portal, connect your hand held or computer to the TCD's WiFi access point ("TCD-AP"), and direct your browser to http://flux.local ; if that does not work, go to the TCD's keypad menu, press ENTER until "BTTFN CLIENTS" is shown, hold ENTER, and look for the FC's IP address there; then direct your browser to that IP by using the URL http://a.b.c.d (a-d being the IP address displayed on the TCD display).
+If you have your FC, along with a Time Circuits Display, mounted in a car, see also [here](#car-setup).
 
 ### The Config Portal
 
@@ -129,9 +113,11 @@ If no key is pressed for 10 seconds, the learning process aborts, as does briefl
 
 ### Locking IR control
 
-You can have your FC ignore IR commands by entering *70 followed by OK. After this sequence the FC will ignore all IR commands until *70OK is entered again. The purpose of this function is to enable you to use the same IR control for your FC and other props (such as SID).
+You can have your FC ignore IR commands from any IR remote control (be it the default supplied one, be it one you had the FC learn) by entering *70 followed by OK. After this sequence the FC will ignore all IR commands until *70OK is entered again. The purpose of this function is to enable you to use the same IR control for your FC and other props (such as SID).
 
 Note that the status of the IR lock is saved 10 seconds after its last change, and persistent accross reboots.
+
+In order to only disable the supplied IR remote control, check the option *Disable supplied IR remote control* in the [Config Portal](#-disable-supplied-ir-remote-control). In that case, any learned remote will still work.
 
 ### IR remote reference
 
@@ -341,7 +327,7 @@ While the music player is playing music, other sound effects are disabled/muted.
 
 ## Connecting a Time Circuits Display
 
-### Connecting TCD by wire
+### Connecting a TCD by wire
 
 Connect GND and GPIO on the Flux Capacitor's "Time Travel" connector to the TCD like in the table below:
 
@@ -373,8 +359,6 @@ The TCD can communicate with the FC wirelessly, via WiFi. It can send out inform
 
 In order to connect your FC to the TCD using BTFFN, just enter the TCD's IP address in the *IP address of TCD* field in the FC's Config Portal. On the TCD, no special configuration is required.
   
-If you power-up TCD and FC at the same time (such as usually [in a car](#car-setup)), and your FC's WiFi is connected to the TCD's access point ("TCD-AP"), check *Wait for TCD-WiFi*. This option does not need to be checked if TCD and FC both connect to an existing WiFi network (such as usually at home).
-
 Afterwards, the FC and the TCD can communicate wirelessly and 
 - play time travel sequences in sync,
 - both play an alarm-sequence when the TCD's alarm occurs,
@@ -414,7 +398,7 @@ The FC can - to a some extent - be controlled through messages sent to topic **b
 
 ### Receive commands from Time Circuits Display
 
-The TCD can trigger a time travel and tell the FC about an alarm by sending messages to topic **bttf/tcd/pub**. The FC receives these commands and reacts accordingly. Note that network traffic has some latency, so timing might not be as exact as a wired connection.
+The TCD can trigger a time travel and tell the FC about an alarm by sending messages to topic **bttf/tcd/pub**. The FC receives these commands and reacts accordingly.
 
 ### Setup
 
@@ -423,6 +407,31 @@ In order to connect to a MQTT network, a "broker" (such as [mosquitto](https://m
 If your broker does not allow anonymous logins, a username and password can be specified.
 
 Limitations: MQTT Protocol version 3.1.1; TLS/SSL not supported; ".local" domains (MDNS) not supported; server/broker must respond to PING (ICMP) echo requests. For proper operation with low latency, it is recommended that the broker is on your local network. 
+
+## Car setup
+
+If your FC, along with a [Time Circuits Display](https://github.com/realA10001986/Time-Circuits-Display/), is mounted in a car, the following network configuration is recommended:
+
+#### TCD
+
+- Run your TCD in [*car mode*](https://github.com/realA10001986/Time-Circuits-Display/blob/main/README.md#car-mode);
+- disable WiFi power-saving on the TCD by setting *WiFi power save timer (AP-mode)* to 0 (zero).
+
+#### Flux Capacitor
+
+Enter the Config Portal on the FC (as described above), click on *Setup* and
+  - enter *192.168.4.1* into the field *IP address of TCD*
+  - check the options *Follow TCD fake power* and *Wait for fake power on at boot* if you have a fake power switch for the TCD (like eg TFC switch)
+  - click on *Save*.
+
+After the FC has restarted, re-enter the FC's Config Portal (while the TCD is powered and in *car mode*) and
+  - click on *Configure WiFi*,
+  - enter *TCD-AP* into the *SSID* field; leave all other fields empty,
+  - click on *Save*.
+
+Using this setup enables the FC to receive notifications about time travel and alarm wirelessly, and to query the TCD for data.
+
+In order to access the FC's Config Portal in your car, connect your hand held or computer to the TCD's WiFi access point ("TCD-AP"), and direct your browser to http://flux.local ; if that does not work, go to the TCD's keypad menu, press ENTER until "BTTFN CLIENTS" is shown, hold ENTER, and look for the FC's IP address there; then direct your browser to that IP by using the URL http://a.b.c.d (a-d being the IP address displayed on the TCD display).
 
 ## Flash Wear
 
@@ -489,6 +498,12 @@ Check this if your FC has a pot for volume selection and you want to use this po
 
 Check this if your FC has a pot for chasing speed selection and you want to use this pot. Note that if this option is checked, commands regarding chasing speed from the remote control are ignored.
 
+##### &#9654; Disable supplied IR remote control
+
+Check this to disable the supplied remote control; the FC will only accept commands from a learned IR remote (if applicable). 
+
+Note that this only disables the supplied remote, unlike [IR locking](#locking-ir-control), where IR commands from any known remote are ignored.
+
 #### Network settings
 
 ##### &#9654; Hostname
@@ -521,23 +536,27 @@ If you want to have your FC to communicate with a Time Circuits Display wireless
 
 If you connect your FC to the TCD's access point ("TCD-AP"), the TCD's IP address is 192.168.4.1.
 
-##### &#9654; Wait for TCD-WiFi
-
-If you power up the TCD and the FC at the very same time (such as in a car), and your FC is configured to connect the TCD's access point ("TCD-AP"), check this to delay connecting to the TCD (to give it time to boot).
-
 ##### &#9654; Change chase speed with GPS speed
 
 If your TCD is equipped with a GPS sensor, the FC can adapt its chase speed to current GPS speed. This option selects if GPS speed should be used for chase speed.
 
-While the FC receives GPS speed from the TCD, IR controls for chase speed are not ignored, but only saved.
+While the FC receives GPS speed from the TCD, IR controls for chase speed are not entirely ignored: They have no visual effect, but they are saved.
 
 ##### &#9654; Follow TCD night-mode
 
-If this option is checked, and your TCD goes into night mode, the FC will activate the Screen Saver with a very short timeout. 
+If this option is checked, and your TCD goes into night mode, the FC will activate the Screen Saver with a very short timeout, and reduce its audio volume.
 
 ##### &#9654; Follow TCD fake power
 
 If this option is checked, and your TCD is equipped with a fake power switch, the FC will also fake-power up/down. If fake power is off, no LED is active and the FC will ignore all input from buttons, knobs and the IR control.
+
+##### &#9654; Wait for fake power on at boot
+
+If this option is checked, your FC will stay dark after being powered-on until it receives a "fake power on" signal from the TCD.
+
+If this is unchecked, the FC will power up normally, play it's "startup" sequence, and only then poll for the fake power; if that is off at that point, it will fake-power-down. For a better experience, have this checked when your TCD is equipped with a fake power switch.
+
+For this option to have any effect, the *Follow TCD fake power* option needs to be check as well.
 
 ##### &#9654; Play time travel sounds
 
@@ -579,6 +598,10 @@ If this is checked, volume and speed settings, as well as learned IR codes are s
  <tr>
      <td align="left">&#9679; &#9679; &#9679; &#9679; &#9679; &#9675;<br>&#9679; &#9679; &#9679; &#9679; &#9679; &#9679;<br>&#9679; &#9679; &#9679; &#9679; &#9679; &#9675;<br>&#9679; &#9679; &#9679; &#9679; &#9679; &#9679;</td>
      <td align="left">Error: Audio files <a href="#audio-file-installation">not installed</a></td>
+    </tr>
+<tr>
+     <td align="left">&#9675; &#9675; &#9679; &#9679; &#9679; &#9679;<br>&#9679; &#9679; &#9679; &#9679; &#9675; &#9675;<br>&#8635;</td>
+     <td align="left">Error: Audio file copy error</td>
     </tr>
  <tr>
      <td align="left">&#9675; &#9679; &#9679; &#9679; &#9679; &#9679;<br>&#9679; &#9679; &#9679; &#9679; &#9679; &#9679;<br>&#9675; &#9679; &#9679; &#9679; &#9679; &#9679;<br>&#9679; &#9679; &#9679; &#9679; &#9679; &#9679;</td>

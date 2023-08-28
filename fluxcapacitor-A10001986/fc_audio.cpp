@@ -126,7 +126,7 @@ void audio_setup()
     audioLogger = &Serial;
     #endif
 
-    useVKnob = ((int)atoi(settings.useVknob) > 0);
+    useVKnob = (atoi(settings.useVknob) > 0);
 
     // Set resolution for volume pot
     analogReadResolution(POT_RESOLUTION);
@@ -1016,7 +1016,9 @@ static float getVolume()
     if(vol_val == 0.0) return vol_val;
 
     vol_val *= curVolFact;
-    
+
+    if(fluxNM) vol_val *= 0.3;
+      
     // Do not totally mute
     // 0.02 is the lowest audible gain
     if(vol_val < 0.02) vol_val = 0.02;
