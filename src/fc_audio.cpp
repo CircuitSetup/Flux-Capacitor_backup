@@ -100,7 +100,7 @@ static long prev_avg, prev_raw, prev_raw2;
 #define POT_RESOLUTION 9
 
 unsigned long renNow1;
-const char *tcdrdone = "/TCD_DONE.TXT";   // leave this, SD is interchangable this way
+const char *tcdrdone = "/TCD_DONE.TXT";   // leave "TCD", SD is interchangable this way
 
 static int  mp_findMaxNum();
 static bool mp_checkForFile(int num);
@@ -126,7 +126,7 @@ void audio_setup()
     audioLogger = &Serial;
     #endif
 
-    useVKnob = ((int)atoi(settings.useVknob) > 0);
+    useVKnob = (atoi(settings.useVknob) > 0);
 
     // Set resolution for volume pot
     analogReadResolution(POT_RESOLUTION);
@@ -1016,7 +1016,9 @@ static float getVolume()
     if(vol_val == 0.0) return vol_val;
 
     vol_val *= curVolFact;
-    
+
+    if(fluxNM) vol_val *= 0.3;
+      
     // Do not totally mute
     // 0.02 is the lowest audible gain
     if(vol_val < 0.02) vol_val = 0.02;
