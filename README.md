@@ -45,7 +45,7 @@ After installation, the SD card can be re-used for [other purposes](#sd-card).
 
 A good first step would be to establish access to the Config Portal in order to configure your Flux Capacitor.
 
-As long as the device is unconfigured, as is the case with a brand new Flux Capacitor, or later if it for some reason fails to connect to a configured WiFi network, it starts in "access point" mode, i.e. it creates a WiFi network of its own named "FC-AP".
+As long as the device is unconfigured, as is the case with a brand new Flux Capacitor, or later if it for some reason fails to connect to a configured WiFi network, it starts in "access point" mode, i.e. it creates a WiFi network of its own named "FC-AP". This is called "Access point mode", or "AP-mode".
 
 - Power up the device and wait until the startup sequence has completed.
 - Connect your computer or handheld device to the WiFi network "FC-AP".
@@ -53,7 +53,11 @@ As long as the device is unconfigured, as is the case with a brand new Flux Capa
  
 If you want your Flux Capacitor to connect to another access point, such as your WiFi network, click on "Configure WiFi". The bare minimum is to select an SSID (WiFi network name) and a WiFi password.
 
-Note that the device requests an IP address via DHCP, unless you entered valid data in the fields for static IP addresses (IP, gateway, netmask, DNS). After saving the WiFi network settings, the device reboots and tries to connect to your configured WiFi network. If that fails, it will again start in access point mode. If the device is inaccessible as a result of incorrect static IPs, wait until the Flux Capacitor has completed its startup sequence, then type \*123456OK on the IR remote; static IP data will be deleted and the device will return to DHCP.
+Note that the device requests an IP address via DHCP, unless you entered valid data in the fields for static IP addresses (IP, gateway, netmask, DNS). 
+
+After saving the WiFi network settings, the device reboots and tries to connect to your configured WiFi network. If that fails, it will again start in access point mode. 
+
+If the device is inaccessible as a result of incorrect static IPs, wait until the Flux Capacitor has completed its startup sequence, then type \*123456OK on the IR remote; static IP data will be deleted and the device will return to DHCP after a reboot.
 
 If you have your FC, along with a Time Circuits Display, mounted in a car, see also [here](#car-setup).
 
@@ -240,7 +244,7 @@ In order to only disable the supplied IR remote control, check the option *Disab
     </tr>
     <tr>
      <td align="left">*123456&#9166;</td>
-     <td align="left">Delete static IP address</td>
+     <td align="left">Delete static IP address and AP WiFI password</td>
     </tr>
 </table>
 
@@ -421,12 +425,12 @@ If your FC, along with a [Time Circuits Display](https://github.com/realA1000198
 
 Enter the Config Portal on the FC (as described above), click on *Setup* and
   - enter *192.168.4.1* into the field *IP address of TCD*
-  - check the options *Follow TCD fake power* and *Wait for fake power on at boot* if you have a fake power switch for the TCD (like eg TFC switch)
+  - check the options *Follow TCD fake power* and *Wait for fake power on at boot* if you have a fake power switch for the TCD (like eg a TFC switch)
   - click on *Save*.
 
 After the FC has restarted, re-enter the FC's Config Portal (while the TCD is powered and in *car mode*) and
   - click on *Configure WiFi*,
-  - enter *TCD-AP* into the *SSID* field; leave all other fields empty,
+  - select the TCD's access point name in the list at the top or enter *TCD-AP* into the *SSID* field; if you password-protected your TCD's AP, enter this password in the *password* field. Leave all other fields empty,
   - click on *Save*.
 
 Using this setup enables the FC to receive notifications about time travel and alarm wirelessly, and to query the TCD for data.
@@ -446,6 +450,8 @@ In order to reduce the number of write operations and thereby prolong the life o
 ##### &#9654; Configure WiFi
 
 Clicking this leads to the WiFi configuration page. On that page, you can connect your FC to your WiFi network by selecting/entering the SSID (WiFi network name) as well as a password (WPA2). By default, the FC's IP address is requested via DHCP. However, you can also configure a static IP for the FC by entering the IP, netmask, gateway and DNS server. All four fields must be filled for a valid static IP configuration. If you want to stick to DHCP, leave those four fields empty.
+
+Note that this page has nothing to do with Access Point mode; it is strictly for connecting your FC to an existing WiFi network as a client.
 
 ##### &#9654; Setup
 
@@ -511,6 +517,16 @@ Note that this only disables the supplied remote, unlike [IR locking](#locking-i
 The device's hostname in the WiFi network. Defaults to 'flux'. This also is the domain name at which the Config Portal is accessible from a browser in the same local network. The URL of the Config Portal then is http://<i>hostname</i>.local (the default is http://flux.local)
 
 If you have more than one Flux Capacitors in your local network, please give them unique hostnames.
+
+##### &#9654; AP Mode: Network name appendix
+
+By default, if the FC creates a WiFi network of its own ("AP-mode"), this network is named "FC-AP". In case you have multiple FCs in your vicinity, you can have a string appended to create a unique network name. If you, for instance, enter "-ABC" here, the WiFi network name will be "FC-AP-ABC". Characters A-Z, a-z, 0-9 and - are allowed.
+
+##### &#9654; AP Mode: WiFi password
+
+By default, and if this field is empty, the FC's own WiFi network ("AP-mode") will be unprotected. If you want to protect your FC access point, enter your password here. It needs to be 8 characters in length and only characters A-Z, a-z, 0-9 and - are allowed.
+
+If you forget this password and are thereby locked out of your FC, enter *123456 followed by OK on the IR remote control; this deletes the WiFi password. Then power-down and power-up your FC and the access point will start unprotected.
 
 ##### &#9654; WiFi connection attempts
 
