@@ -65,14 +65,14 @@ If you have your FC, along with a Time Circuits Display, mounted in a car, see a
 
 The Config Portal is accessible exclusively through WiFi. As outlined above, if the device is not connected to a WiFi network, it creates its own WiFi network (named "FC-AP"), to which your WiFi-enabled hand held device or computer first needs to connect in order to access the Config Portal.
 
-If the operating system on your handheld or computer supports Bonjour (a.k.a. "mDNS"), you can connect to the Config Portal by directing your browser to http://flux.local . (mDNS is supported on Windows 10 version TH2 (1511) [other sources say 1703] and later, Android 13 and later, MacOS, iOS)
+If the operating system on your handheld or computer supports Bonjour (a.k.a. "mDNS"), you can enter the Config Portal by directing your browser to http://flux.local . (mDNS is supported on Windows 10 version TH2 (1511) [other sources say 1703] and later, Android 13 and later, MacOS, iOS)
 
-If that fails, the way to connect to the Config Portal depends on whether the device is in access point mode or not. 
+If that fails, the way to enter the Config Portal depends on whether the device is in access point mode or not. 
 - If it is in access point mode (and your handheld/computer is connected to the WiFi network "FC-AP"), navigate your browser to http://192.168.4.1 
 - Otherwise type *90 followed by OK on the remote control and listen, the IP address will be read out loud.
 
 In the main menu, click on "Setup" to configure your Flux Capacitor.
-| ![The_Config_Portal](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/8e5fa98e-a9aa-4332-8c81-f7ea9bb19ee8) |
+| ![The Config Portal](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/2c29632b-4d2b-4d67-97d5-a398198115d3) |
 |:--:| 
 | *The Config Portal's Setup page* |
 
@@ -114,6 +114,8 @@ First, go to the Config Portal, uncheck *TCD connected by wire* on the Setup pag
 If your remote control lacks the \* (starts command sequence) and \# (aborts command sequence) keys, you can use any other key, of course. \* could be eg. "menu" or "setup", \# could be "exit" or "return".
 
 If no key is pressed for 10 seconds, the learning process aborts, as does briefly pressing the Time Travel button. In thoses cases, the keys already learned are forgotten and nothing is saved.
+
+To make the FC forget a learned IR remote control, type *654321 followed by OK.
 
 ### Locking IR control
 
@@ -246,6 +248,10 @@ In order to only disable the supplied IR remote control, check the option *Disab
      <td align="left">*123456&#9166;</td>
      <td align="left">Delete static IP address and AP WiFI password</td>
     </tr>
+   <tr>
+     <td align="left">*654321&#9166;</td>
+     <td align="left">Forget learned IR remote control</td>
+    </tr>
 </table>
 
 [Here](https://github.com/realA10001986/Flux-Capacitor/blob/main/CheatSheet.pdf) is a cheat sheet for printing or screen-use. (Note that MacOS' preview application has a bug that scrambles the links in the document. Acrobat Reader does it correctly.)
@@ -279,7 +285,7 @@ Other ways of triggering a time travel are available if a [Time Circuits Display
 
 ## SD card
 
-Preface note on SD cards: For unknown reasons, some SD cards simply do not work with this device. For instance, I had no luck with a Sandisk Ultra 32GB card. If your SD card is not recognized, check if it is formatted in FAT32 format (not exFAT!). Also, the size must not exceed 32GB (as larger cards cannot be formatted with FAT32).
+Preface note on SD cards: For unknown reasons, some SD cards simply do not work with this device. For instance, I had no luck with Sandisk Ultra 32GB and  "Intenso" cards. If your SD card is not recognized, check if it is formatted in FAT32 format (not exFAT!). Also, the size must not exceed 32GB (as larger cards cannot be formatted with FAT32). I am currently using Transcend SDHC 4GB cards and those work fine.
 
 The SD card, apart from being used to [install](#audio-file-installation) the default audio files, can be used for substituting default sounds and for music played back by the [Music player](#the-music-player).
 
@@ -387,7 +393,7 @@ The FC supports the MQTT protocol version 3.1.1 for the following features:
 
 ### Control the FC via MQTT
 
-The FC can - to a some extent - be controlled through messages sent to topic **bttf/fc/cmd**. Support commands are
+The FC can - to some extent - be controlled through messages sent to topic **bttf/fc/cmd**. Support commands are
 - TIMETRAVEL: Start a [time travel](#time-travel)
 - FLUX_OFF: Disables the [flux sound](#the-flux-sound)
 - FLUX_ON: Enables the [flux sound](#the-flux-sound)
@@ -425,7 +431,7 @@ If your FC, along with a [Time Circuits Display](https://github.com/realA1000198
 
 Enter the Config Portal on the FC (as described above), click on *Setup* and
   - enter *192.168.4.1* into the field *IP address of TCD*
-  - check the options *Follow TCD fake power* and *Wait for fake power on at boot* if you have a fake power switch for the TCD (like eg a TFC switch)
+  - check the option *Follow TCD fake power* if you have a fake power switch for the TCD (like eg a TFC switch)
   - click on *Save*.
 
 After the FC has restarted, re-enter the FC's Config Portal (while the TCD is powered and in *car mode*) and
@@ -441,7 +447,7 @@ In order to access the FC's Config Portal in your car, connect your hand held or
 
 Flash memory has a somewhat limited life-time. It can be written to only between 10.000 and 100.000 times before becoming unreliable. The firmware writes to the internal flash memory when saving settings and other data. Every time you change settings, data is written to flash memory.
 
-In order to reduce the number of write operations and thereby prolong the life of your Flux Capacitor, it is recommended to use a good-quality SD card and to check ["Save volume/speed/IR settings on SD"](#-save-volumespeedir-settings-on-sd) in the Config Portal; alarm and speed settings as well as learned IR codes are then stored on the SD card (which also suffers from wear but is easy to replace). If you want to swap the SD card but preserve your volume/speed/IR settings, go to the Config Portal while the old SD card is still in place, uncheck the *Save volume/speed/IR settings on SD* option, click on Save and wait until the device has rebooted. You can then power down, swap the SD card and power-up again. Then go to the Config Portal, change the option back on and click on Save. Your settings are now on the new SD card.
+In order to reduce the number of write operations and thereby prolong the life of your Flux Capacitor, it is recommended to use a good-quality SD card and to check *[Save volume/speed/IR settings on SD](#-save-volumespeedir-settings-on-sd)* in the Config Portal; alarm and speed settings as well as learned IR codes are then stored on the SD card (which also suffers from wear but is easy to replace). If you want to swap the SD card but preserve your volume/speed/IR settings, go to the Config Portal while the old SD card is still in place, uncheck the *Save volume/speed/IR settings on SD* option, click on Save and wait until the device has rebooted. You can then power down, swap the SD card and power-up again. Then go to the Config Portal, change the option back on and click on Save. Your settings are now on the new SD card.
 
 ## Appendix A: The Config Portal
 
@@ -449,7 +455,7 @@ In order to reduce the number of write operations and thereby prolong the life o
 
 ##### &#9654; Configure WiFi
 
-Clicking this leads to the WiFi configuration page. On that page, you can connect your FC to your WiFi network by selecting/entering the SSID (WiFi network name) as well as a password (WPA2). By default, the FC's IP address is requested via DHCP. However, you can also configure a static IP for the FC by entering the IP, netmask, gateway and DNS server. All four fields must be filled for a valid static IP configuration. If you want to stick to DHCP, leave those four fields empty.
+Clicking this leads to the WiFi configuration page. On that page, you can connect your FC to your WiFi network by selecting/entering the SSID (WiFi network name) as well as a password (WPA2). By default, the FC requests an IP address via DHCP. However, you can also configure a static IP for the FC by entering the IP, netmask, gateway and DNS server. All four fields must be filled for a valid static IP configuration. If you want to stick to DHCP, leave those four fields empty.
 
 Note that this page has nothing to do with Access Point mode; it is strictly for connecting your FC to an existing WiFi network as a client.
 
@@ -566,14 +572,6 @@ If this option is checked, and your TCD goes into night mode, the FC will activa
 
 If this option is checked, and your TCD is equipped with a fake power switch, the FC will also fake-power up/down. If fake power is off, no LED is active and the FC will ignore all input from buttons, knobs and the IR control.
 
-##### &#9654; Wait for fake power on at boot
-
-If this option is checked, your FC will stay dark after being powered-on until it receives a "fake power on" signal from the TCD.
-
-If this is unchecked, the FC will power up normally, play it's "startup" sequence, and only then poll for the fake power; if that is off at that point, it will fake-power-down. For a better experience, have this checked when your TCD is equipped with a fake power switch.
-
-For this option to have any effect, the *Follow TCD fake power* option needs to be check as well.
-
 ##### &#9654; Play time travel sounds
 
 If other props are connected, they might bring their own time travel sound effects. In this case, you can uncheck this to disable the Flux Capacitor's own time travel sounds. Note that this only covers sounds played during time travel, not other sound effects.
@@ -600,9 +598,9 @@ When checked, songs are shuffled when the device is booted. When unchecked, song
 
 #### Other settings
 
-##### &#9654; Save volume/speed/IR settings on SD
+##### &#9654; Save secondary settings on SD
 
-If this is checked, volume and speed settings, as well as learned IR codes are stored on the SD card. This helps to minimize write operations to the internal flash memory and to prolong the lifetime of your Flux Capacitor. See [Flash Wear](#flash-wear).
+If this is checked, some settings (volume, chase speed, minimum box light level), as well as learned IR codes are stored on the SD card. This helps to minimize write operations to the internal flash memory and to prolong the lifetime of your Flux Capacitor. See [Flash Wear](#flash-wear).
 
 ## Appendix B: LED signals
 

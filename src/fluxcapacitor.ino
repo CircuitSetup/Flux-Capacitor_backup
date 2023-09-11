@@ -3,6 +3,7 @@
  * CircuitSetup.us Flux Capacitor
  * (C) 2023 Thomas Winischhofer (A10001986)
  * https://github.com/realA10001986/Flux-Capacitor
+ * http://fc.backtothefutu.re
  *
  * License: MIT
  * 
@@ -85,6 +86,24 @@
 
 /*  Changelog
  *   
+ *  2023/09/10 (A10001986)
+ *    - If specific config file not found on SD, read from FlashFS - but only
+ *      if it is mounted.
+ *  2023/09/09 (A10001986)
+ *    - Switch to LittleFS by default
+ *    - *654321OK lets FC forget learned IR remote control
+ *    - Remove "Wait for TCD fake power on" option; is now implied
+ *    - Save current idle pattern to SD for persistence
+ *      (only if changed via IR, not MQTT)
+ *    - If SD mount fails at 16Mhz, retry at 25Mhz
+ *    - If specific config file not found on SD, read from FlashFS
+ *  2023/09/07 (A10001986)
+ *    - Fix links
+ *  2023/09/02 (A10001986)
+ *    - Handle dynamic ETTO LEAD for BTTFN-triggered time travels
+ *    - Go back to stand-alone mode if BTTFN polling times-out
+ *  2023/08/31 (A10001986)
+ *    - WiFi connect retry: When no network config'd, set retry to 1
  *  2023/08/28 (A10001986)
  *    - Adapt to TCD's WiFi name appendix option
  *    - Add "AP name appendix" setting; allows unique AP names when running multiple 

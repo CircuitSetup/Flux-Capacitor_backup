@@ -3,6 +3,7 @@
  * CircuitSetup.us Flux Capacitor
  * (C) 2023 Thomas Winischhofer (A10001986)
  * https://github.com/realA10001986/Flux-Capacitor
+ * http://fc.backtothefutu.re
  *
  * Main controller
  *
@@ -105,6 +106,7 @@ bool networkTCDTT      = false;
 bool networkReentry    = false;
 bool networkAbort      = false;
 bool networkAlarm      = false;
+uint16_t networkLead   = ETTO_LEAD;
 
 static bool useGPSS     = false;
 static bool usingGPSS   = false;
@@ -116,7 +118,7 @@ static bool tcdNM = false;
 bool        fluxNM = false;
 static bool useFPO = false;
 static bool tcdFPO = false;
-static bool wait4FPOn = false;
+static bool wait4FPOn = true;
 
 #define FLUXM2_SECS  30
 #define FLUXM3_SECS  60
@@ -125,12 +127,15 @@ static bool          fluxTimer = false;
 static unsigned long fluxTimerNow = 0;
 static unsigned long fluxTimeout = FLUXM2_SECS * 1000;
 
+uint8_t fluxPat = 0;
+
 static bool          playTTsounds = true;
 
 // Time travel status flags etc.
 bool                 TTrunning = false;  // TT sequence is running
 static bool          extTT = false;      // TT was triggered by TCD
 static unsigned long TTstart = 0;
+static unsigned long P0duration = ETTO_LEAD;
 static bool          TTP0 = false;
 static bool          TTP1 = false;
 static bool          TTP2 = false;
@@ -173,6 +178,8 @@ static bool          spdchanged = false;
 static unsigned long spdchgnow = 0;
 static bool          bllchanged = false;
 static unsigned long bllchgnow = 0;
+static bool          ipachanged = false;
+static unsigned long ipachgnow = 0;
 static bool          irlchanged = false;
 static unsigned long irlchgnow = 0;
 
@@ -259,6 +266,8 @@ static bool          BTTFNPacketDue = false;
 static bool          BTTFNWiFiUp = false;
 static uint8_t       BTTFNfailCount = 0;
 static uint32_t      BTTFUDPID = 0;
+static unsigned long lastBTTFNpacket = 0;
+static bool          BTTFNBootTO = false;
 
 
 // Forward declarations ------
@@ -273,7 +282,7 @@ static void endIRfeedback();
 static uint16_t getRawSpeed();
 static void     setPotSpeed();
 
-static void timeTravel(bool TCDtriggered);
+static void timeTravel(bool TCDtriggered, uint16_t P0Dur);
 
 static void ttkeyScan();
 static void TTKeyPressed();
@@ -314,6 +323,7 @@ void main_setup()
     // Load settings
     loadCurSpeed();
     loadBLLevel();
+    loadIdlePat();
     loadIRLock();
 
     // Set up options to play/mute sounds
@@ -419,6 +429,7 @@ void main_setup()
     }
 
     fcLEDs.stop(true);
+    fcLEDs.setSequence(fluxPat);
 
     // Set FCLeds to default/saved speed
     if(useSKnob) {
@@ -430,10 +441,10 @@ void main_setup()
     // Initialize BTTF network
     bttfn_setup();
 
-    // If "Wait for TCD fake power on" is set,
+    // If "Follow TCD fake power" is set,
     // stay silent and dark
 
-    if(useBTTFN && useFPO && wait4FPOn) {
+    if(useBTTFN && useFPO && wait4FPOn && (WiFi.status() == WL_CONNECTED)) {
 
         FPBUnitIsOn = false;
         tcdFPO = fpoOld = true;
@@ -655,7 +666,7 @@ void main_loop()
                 if(TCDconnected) {
                     ssEnd(false);  // let TT() take care of restarting sound
                 }
-                timeTravel(TCDconnected);
+                timeTravel(TCDconnected, ETTO_LEAD);
             }
         }
     
@@ -663,7 +674,7 @@ void main_loop()
         if(networkTimeTravel) {
             networkTimeTravel = false;
             ssEnd(false);  // let TT() take care of restarting sound
-            timeTravel(networkTCDTT);
+            timeTravel(networkTCDTT, networkLead);
         }
     }
 
@@ -676,12 +687,12 @@ void main_loop()
         if(extTT) {
 
             // ***********************************************************************************
-            // TT triggered by TCD (GPIO or MQTT) ************************************************
+            // TT triggered by TCD (BTTFN, GPIO or MQTT) *****************************************
             // ***********************************************************************************
 
-            if(TTP0) {   // Acceleration - runs for ETTO_LEAD ms
+            if(TTP0) {   // Acceleration - runs for ETTO_LEAD ms by default
 
-                if(!networkAbort && (now - TTstart < ETTO_LEAD)) {
+                if(!networkAbort && (now - TTstart < P0duration)) {
 
                     if(TTFInt && (now - TTfUpdNow >= TTFInt)) {
                         int t = fcLEDs.getSpeed();
@@ -698,6 +709,10 @@ void main_loop()
                     //}
                              
                 } else {
+
+                    if(fcLEDs.getSpeed() != 2) {
+                        fcLEDs.setSpeed(2);
+                    }
 
                     TTP0 = false;
                     TTP1 = true;
@@ -841,6 +856,10 @@ void main_loop()
                     //}
                              
                 } else {
+
+                    if(fcLEDs.getSpeed() != 2) {
+                        fcLEDs.setSpeed(2);
+                    }
 
                     TTP0 = false;
                     TTP1 = true;
@@ -1004,28 +1023,48 @@ void main_loop()
         }
     }
 
-    // Save volume 10 seconds after last change
-    if(!TTrunning && volchanged && (now - volchgnow > 10000)) {
-        volchanged = false;
-        saveCurVolume();
+    // If network is interrupted, return to stand-alone
+    if(useBTTFN) {
+        if( (lastBTTFNpacket && (now - lastBTTFNpacket > 30*1000)) ||
+            (!BTTFNBootTO && !lastBTTFNpacket && (now - powerupMillis > 60*1000)) ) {
+            tcdNM = false;
+            tcdFPO = false;
+            gpsSpeed = -1;
+            lastBTTFNpacket = 0;
+            BTTFNBootTO = true;
+        }
     }
 
-    // Save speed 10 seconds after last change
-    if(!TTrunning && spdchanged && (now - spdchgnow > 10000)) {
-        spdchanged = false;
-        saveCurSpeed();
-    }
-
-    // Save mbll 10 seconds after last change
-    if(!TTrunning && bllchanged && (now - bllchgnow > 10000)) {
-        bllchanged = false;
-        saveBLLevel();
-    }
-
-    // Save irlock 10 seconds after last change
-    if(!TTrunning && irlchanged && (now - irlchgnow > 10000)) {
-        irlchanged = false;
-        saveIRLock();
+    if(!TTrunning) {
+        // Save volume 10 seconds after last change
+        if(volchanged && (now - volchgnow > 10000)) {
+            volchanged = false;
+            saveCurVolume();
+        }
+    
+        // Save speed 10 seconds after last change
+        if(spdchanged && (now - spdchgnow > 10000)) {
+            spdchanged = false;
+            saveCurSpeed();
+        }
+    
+        // Save mbll 10 seconds after last change
+        if(bllchanged && (now - bllchgnow > 10000)) {
+            bllchanged = false;
+            saveBLLevel();
+        }
+    
+        // Save idle pattern 10 seconds after last change
+        if(ipachanged && (now - ipachgnow > 10000)) {
+            ipachanged = false;
+            saveIdlePat();
+        }
+    
+        // Save irlock 10 seconds after last change
+        if(irlchanged && (now - irlchgnow > 10000)) {
+            irlchanged = false;
+            saveIRLock();
+        }
     }
 
     if(!TTrunning && !IRLearning && networkAlarm) {
@@ -1044,7 +1083,7 @@ void main_loop()
  * Time travel
  */
 
-static void timeTravel(bool TCDtriggered)
+static void timeTravel(bool TCDtriggered, uint16_t P0Dur)
 {
     int i = 0, tspd;
     
@@ -1088,8 +1127,12 @@ static void timeTravel(bool TCDtriggered)
     
     if(TCDtriggered) {    // TCD-triggered TT (GPIO, BTTFN, MQTT-pub) (synced with TCD)
         extTT = true;
+        P0duration = P0Dur;
+        #ifdef FC_DBG
+        Serial.printf("P0 duration is %d\n", P0duration);
+        #endif
         if(i > 0) {
-            TTFInt = ETTO_LEAD / i;
+            TTFInt = P0duration / i;
         } else {
             TTFInt = 0;
         }
@@ -1262,7 +1305,7 @@ static void executeIRCmd(int key)
     switch(key) {
     case 0:                           // 0: time travel
         if(irLocked) return;
-        timeTravel(false);
+        timeTravel(false, ETTO_LEAD);
         break;
     case 1:                           // 1:
         if(irLocked) return;
@@ -1382,7 +1425,10 @@ static void executeIRCmd(int key)
         switch(strlen(inputBuffer)) {
         case 1:
             if(!irLocked) {
-                fcLEDs.setSequence(atoi(inputBuffer));
+                fluxPat = atoi(inputBuffer);
+                fcLEDs.setSequence(fluxPat);
+                ipachanged = true;
+                ipachgnow = millis();
             }
             break;
         case 2:
@@ -1579,6 +1625,11 @@ static void executeIRCmd(int key)
                         deleteIpSettings();               // *123456OK deletes IP settings
                         settings.appw[0] = 0;             // and clears AP mode WiFi password
                         write_settings();
+                    } else if(!strcmp(inputBuffer, "654321")) {
+                        deleteIRKeys();                   // *654321OK deletes learned IR remote
+                        for(int i = 0; i < NUM_IR_KEYS; i++) {
+                            remote_codes[i][1] = 0;
+                        }
                     } else {
                         doBadInp = true;
                     }
@@ -1981,6 +2032,7 @@ static void BTTFNCheckPacket()
                 networkTCDTT = true;
                 networkReentry = false;
                 networkAbort = false;
+                networkLead = BTTFUDPBuf[6] | (BTTFUDPBuf[7] << 8);
             }
             break;
         case BTTFN_NOT_REENTRY:
@@ -2021,20 +2073,16 @@ static void BTTFNCheckPacket()
 
         if(BTTFUDPBuf[5] & 0x02) {
             gpsSpeed = (int16_t)(BTTFUDPBuf[18] | (BTTFUDPBuf[19] << 8));
-            #ifdef FC_DBG
-            Serial.printf("BTTFN: GPS speed %d\n", gpsSpeed);
-            #endif
         }
         if(BTTFUDPBuf[5] & 0x10) {
             tcdNM  = (BTTFUDPBuf[26] & 0x01) ? true : false;
             tcdFPO = (BTTFUDPBuf[26] & 0x02) ? true : false;   // 1 means fake power off
-            #ifdef FC_DBG
-            Serial.printf("BTTFN: Night mode is %d, fake power is %d\n", tcdNM, tcdFPO);
-            #endif
         } else {
             tcdNM = false;
             tcdFPO = false;
         }
+
+        lastBTTFNpacket = mymillis;
 
         // Eval SID IP from TCD
         //if(BTTFUDPBuf[5] & 0x20) {

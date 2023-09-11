@@ -3,6 +3,7 @@
  * CircuitSetup.us Flux Capacitor
  * (C) 2023 Thomas Winischhofer (A10001986)
  * https://github.com/realA10001986/Flux-Capacitor
+ * http://fc.backtothefutu.re
  *
  * Main controller
  *
@@ -51,6 +52,8 @@ extern bool TCDconnected;
 extern bool FPBUnitIsOn;
 extern bool fluxNM;
 
+extern uint8_t fluxPat;
+
 extern bool TTrunning;
 extern int  playFLUX;
 extern bool IRLearning;
@@ -60,6 +63,7 @@ extern bool networkTCDTT;
 extern bool networkReentry;
 extern bool networkAbort;
 extern bool networkAlarm;
+extern uint16_t networkLead;
 
 void main_boot();
 void main_setup();
