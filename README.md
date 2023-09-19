@@ -93,7 +93,7 @@ The main control device, however, is the IR remote control.
 
 ### IR remote control
 
-Your FC should have an IR remote control included. This remote works out-of-the-box and needs no setup. 
+Your FC kit includes an IR remote control. This remote works out-of-the-box and needs no setup. 
 
 | ![Default IR remote control](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/dc32787d-de83-4be4-9df8-7442bf623284) |
 |:--:| 
@@ -170,85 +170,85 @@ In order to only disable the supplied IR remote control, check the option **_Dis
     <tr>
      <td align="center" colspan="2">IR remote reference: Special sequences<br>(&#9166; = OK key)</td>
     </tr>
-  <tr>
-     <td align="left">*0&#9166;</td>
+    <tr>
      <td align="left">Select original chase sequence</td>
+     <td align="left">*0&#9166;</td>
     </tr>
-   <tr>
-     <td align="left">*1&#9166; - *9&#9166;</td>
+    <tr>
      <td align="left">Select chase sequences 1-9</td>
+     <td align="left">*1&#9166; - *9&#9166;</td>
     </tr>
     <tr>
-     <td align="left">*00&#9166;</td>
      <td align="left">Disable <a href="#the-flux-sound">flux sound</a></td>
+     <td align="left">*00&#9166;</td>
     </tr>
-   <tr>
-     <td align="left">*01&#9166;</td>
+    <tr>
      <td align="left">Enable <a href="#the-flux-sound">flux sound</a></td>
+     <td align="left">*01&#9166;</td>
     </tr>
     <tr>
-     <td align="left">*02&#9166;</td>
      <td align="left">Enable <a href="#the-flux-sound">flux sound</a>  (30 seconds)</td>
-    </tr>
-   <tr>
-     <td align="left">*03&#9166;</td>
-     <td align="left">Enable <a href="#the-flux-sound">flux sound</a>  (60 seconds)</td>
+     <td align="left">*02&#9166;</td>
     </tr>
     <tr>
-     <td align="left">*10&#9166; - *14&#9166;</td>
+     <td align="left">Enable <a href="#the-flux-sound">flux sound</a>  (60 seconds)</td>
+     <td align="left">*03&#9166;</td>
+    </tr>
+    <tr>
      <td align="left">Set minimum box light level</td>
+     <td align="left">*10&#9166; - *14&#9166;</td>
     </tr>
      <tr>
-     <td align="left">*20&#9166;</td>
      <td align="left">Reset chase speed to default</td>
+     <td align="left">*20&#9166;</td>
     </tr>
     <tr>
-     <td align="left">*50&#9166; - *59&#9166;</td>
      <td align="left"><a href="#the-music-player">Music Player</a>: Select music folder</td>
+     <td align="left">*50&#9166; - *59&#9166;</td>
     </tr>
     <tr>
-     <td align="left">*222&#9166;</td>
      <td align="left"><a href="#the-music-player">Music Player</a>: Shuffle off</td>
+     <td align="left">*222&#9166;</td>
     </tr>
     <tr>
-     <td align="left">*555&#9166;</td>
      <td align="left"><a href="#the-music-player">Music Player</a>: Shuffle on</td>
+     <td align="left">*555&#9166;</td>
     </tr> 
     <tr>
-     <td align="left">*888&#9166;</td>
      <td align="left"><a href="#the-music-player">Music Player</a>: Go to song 0</td>
+     <td align="left">*888&#9166;</td>
     </tr>
     <tr>
-     <td align="left">*888xxx&#9166;</td>
      <td align="left"><a href="#the-music-player">Music Player</a>: Go to song xxx</td>
+     <td align="left">*888xxx&#9166;</td>
     </tr>
     <tr>
-     <td align="left">*70&#9166;</td>
      <td align="left"><a href="#locking-ir-control">Disable/Enable</a> IR remote commands</td>
+     <td align="left">*70&#9166;</td>
     </tr>
     <tr>
-     <td align="left">*80&#9166;</td>
      <td align="left">Toggle usage of volume knob</td>
+     <td align="left">*80&#9166;</td>
     </tr>
-   <tr>
-     <td align="left">*81&#9166;</td>
+    <tr>
      <td align="left">Toggle usage of speed knob</td>
+     <td align="left">*81&#9166;</td>
     </tr>
-     <tr>
-     <td align="left">*90&#9166;</td>
+    <tr>
      <td align="left">Say current IP address</td>
+     <td align="left">*90&#9166;</td>
     </tr>
     <tr>
-     <td align="left">*64738&#9166;</td>
      <td align="left">Reboot the device</td>
+     <td align="left">*64738&#9166;</td>
     </tr>
     <tr>
-     <td align="left">*123456&#9166;</td>
      <td align="left">Delete static IP address and AP WiFI password</td>
+     <td align="left">*123456&#9166;</td>
     </tr>
-   <tr>
-     <td align="left">*654321&#9166;</td>
+    <tr>
      <td align="left">Forget learned IR remote control</td>
+     <td align="left">*654321&#9166;</td>
     </tr>
 </table>
 
@@ -365,7 +365,7 @@ The TCD can communicate with the FC wirelessly, via WiFi. It can send out inform
 
 ![BTTFN connection](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/93a9c471-d288-4a8f-87df-506ab8d5e619)
 
-In order to connect your FC to the TCD using BTFFN, just enter the TCD's IP address in the **_IP address of TCD_** field in the FC's Config Portal. On the TCD, no special configuration is required.
+In order to connect your FC to the TCD using BTTFN, just enter the TCD's IP address in the **_IP address of TCD_** field in the FC's Config Portal. On the TCD, no special configuration is required.
   
 Afterwards, the FC and the TCD can communicate wirelessly and 
 - play time travel sequences in sync,
@@ -445,7 +445,7 @@ In order to access the FC's Config Portal in your car, connect your hand held or
 
 Flash memory has a somewhat limited life-time. It can be written to only between 10.000 and 100.000 times before becoming unreliable. The firmware writes to the internal flash memory when saving settings and other data. Every time you change settings, data is written to flash memory.
 
-In order to reduce the number of write operations and thereby prolong the life of your Flux Capacitor, it is recommended to use a good-quality SD card and to check **_[Save secondary settings on SD](#-save-volumespeedir-settings-on-sd)_** in the Config Portal; alarm and speed settings as well as learned IR codes are then stored on the SD card (which also suffers from wear but is easy to replace). If you want to swap the SD card but preserve your volume/speed/IR settings, go to the Config Portal while the old SD card is still in place, uncheck the **_Save secondary settings on SD_** option, click on Save and wait until the device has rebooted. You can then power down, swap the SD card and power-up again. Then go to the Config Portal, change the option back on and click on Save. Your settings are now on the new SD card.
+In order to reduce the number of write operations and thereby prolong the life of your Flux Capacitor, it is recommended to use a good-quality SD card and to check **_[Save secondary settings on SD](#-save-secondary-settings-on-sd)_** in the Config Portal; alarm and speed settings as well as learned IR codes are then stored on the SD card (which also suffers from wear but is easy to replace). If you want to swap the SD card but preserve your volume/speed/IR settings, go to the Config Portal while the old SD card is still in place, uncheck the **_Save secondary settings on SD_** option, click on Save and wait until the device has rebooted. You can then power down, swap the SD card and power-up again. Then go to the Config Portal, change the option back on and click on Save. Your settings are now on the new SD card.
 
 ## Appendix A: The Config Portal
 
