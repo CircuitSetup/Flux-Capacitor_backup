@@ -14,7 +14,7 @@ Features include
 - [Music player](#the-music-player): Play mp3 files located on an SD card
 - [SD card](#sd-card) support for custom audio files for effects, and music for the Music Player
 - Advanced network-accessible [Config Portal](#the-config-portal) for setup with mDNS support for easy access (http://flux.local, hostname configurable)
-- Wireless communication ("[BTTF-Network](#bttf-network-bttfn)") with [Time Circuits Display](https://tcd.backtothefutu.re); used for synchonized time travels, alarm, chase speed, night mode, fake power
+- Wireless communication ("[BTTF-Network](#bttf-network-bttfn)") with [Time Circuits Display](https://tcd.backtothefutu.re); used for synchonized time travels, alarm, chase speed, night mode, fake power and remote control through TCD keypad
 - [Home Assistant](#home-assistant--mqtt) (MQTT 3.1.1) support
 - Built-in installer for default audio files in addition to OTA firmware updates
 
@@ -89,7 +89,7 @@ There are various options to control the Flux Capacitor:
 
 For the options to trigger a time travel, see [here](#time-travel).
 
-The main control device, however, is the IR remote control.
+The main control device is the supplied IR remote control. If a TCD is connected through [BTTF-Network](#bttf-network-bttfn), the FC can also be controlled through the TCD's keypad.
 
 ### IR remote control
 
@@ -127,21 +127,21 @@ In order to only disable the supplied IR remote control, check the option **_Dis
 
 <table>
     <tr>
-     <td align="center" colspan="3">IR remote reference: Single key actions</td>
+     <td align="center" colspan="3">IR remote reference: Single key actions<br>[Code on TCD keypad]</td>
     </tr>
     <tr>
      <td align="center">1<br>-</td>
-     <td align="center">2<br><a href="#the-music-player">Music Player</a>: Previous song</td>
-     <td align="center">3<br><a href="#additional-custom-sounds">Play "key3.mp3"</a></td>
+     <td align="center">2<br><a href="#the-music-player">Music Player</a>: Previous song<br>[3002]</td>
+     <td align="center">3<br><a href="#additional-custom-sounds">Play "key3.mp3"</a><br>[3003]</td>
     </tr>
     <tr>
      <td align="center">4<br>-</td>
-     <td align="center">5<br><a href="#the-music-player">Music Player</a>: Play/Stop</a></td>
-     <td align="center">6<br><a href="#additional-custom-sounds">Play "key6.mp3"</a></td>
+     <td align="center">5<br><a href="#the-music-player">Music Player</a>: Play/Stop<br>[3005]</td>
+     <td align="center">6<br><a href="#additional-custom-sounds">Play "key6.mp3"</a><br>[3006]</td>
     </tr>
     <tr>
      <td align="center">7<br>-</td>
-     <td align="center">8<br><a href="#the-music-player">Music Player</a>: Next song</td>
+     <td align="center">8<br><a href="#the-music-player">Music Player</a>: Next song<br>[3008]</td>
      <td align="center">9<br>-</td>
     </tr>
     <tr>
@@ -166,89 +166,92 @@ In order to only disable the supplied IR remote control, check the option **_Dis
     </tr>
 </table>
 
+Numbers in brackets are the code to be entered on the TCD keypad if a TCD is connected via [BTTF-Network](#bttf-network-bttfn).
+
 <table>
     <tr>
-     <td align="center" colspan="2">IR remote reference: Special sequences<br>(&#9166; = OK key)</td>
+     <td align="center" colspan="3">IR/TCD remote reference: Special sequences<br>(&#9166; = OK key)</td>
     </tr>
+   <tr><td>Function</td><td>IR sequence</td><td>Code on TCD</td></tr>
     <tr>
      <td align="left">Select original chase sequence</td>
-     <td align="left">*0&#9166;</td>
+     <td align="left">*10&#9166;</td><td>3010</td>
     </tr>
     <tr>
      <td align="left">Select chase sequences 1-9</td>
-     <td align="left">*1&#9166; - *9&#9166;</td>
+     <td align="left">*11&#9166; - *19&#9166;</td><td>3011-3019</td>
     </tr>
     <tr>
      <td align="left">Disable <a href="#the-flux-sound">flux sound</a></td>
-     <td align="left">*00&#9166;</td>
+     <td align="left">*20&#9166;</td><td>3020</td>
     </tr>
     <tr>
      <td align="left">Enable <a href="#the-flux-sound">flux sound</a></td>
-     <td align="left">*01&#9166;</td>
+     <td align="left">*21&#9166;</td><td>3021</td>
     </tr>
     <tr>
      <td align="left">Enable <a href="#the-flux-sound">flux sound</a>  (30 seconds)</td>
-     <td align="left">*02&#9166;</td>
+     <td align="left">*22&#9166;</td><td>3022</td>
     </tr>
     <tr>
      <td align="left">Enable <a href="#the-flux-sound">flux sound</a>  (60 seconds)</td>
-     <td align="left">*03&#9166;</td>
+     <td align="left">*23&#9166;</td><td>3023</td>
     </tr>
     <tr>
      <td align="left">Set minimum box light level</td>
-     <td align="left">*10&#9166; - *14&#9166;</td>
+     <td align="left">*30&#9166; - *34&#9166;</td><td>3030-3034</td>
     </tr>
      <tr>
      <td align="left">Reset chase speed to default</td>
-     <td align="left">*20&#9166;</td>
+     <td align="left">*40&#9166;</td><td>3040</td>
     </tr>
     <tr>
      <td align="left"><a href="#the-music-player">Music Player</a>: Select music folder</td>
-     <td align="left">*50&#9166; - *59&#9166;</td>
+     <td align="left">*50&#9166; - *59&#9166;</td><td>3050-3059</td>
     </tr>
     <tr>
      <td align="left"><a href="#the-music-player">Music Player</a>: Shuffle off</td>
-     <td align="left">*222&#9166;</td>
+     <td align="left">*222&#9166;</td><td>3222</td>
     </tr>
     <tr>
      <td align="left"><a href="#the-music-player">Music Player</a>: Shuffle on</td>
-     <td align="left">*555&#9166;</td>
+     <td align="left">*555&#9166;</td><td>3555</td>
     </tr> 
     <tr>
      <td align="left"><a href="#the-music-player">Music Player</a>: Go to song 0</td>
-     <td align="left">*888&#9166;</td>
+     <td align="left">*888&#9166;</td><td>3888</td>
     </tr>
     <tr>
      <td align="left"><a href="#the-music-player">Music Player</a>: Go to song xxx</td>
-     <td align="left">*888xxx&#9166;</td>
+     <td align="left">*888xxx&#9166;</td><td>n/a</td>
     </tr>
     <tr>
      <td align="left"><a href="#locking-ir-control">Disable/Enable</a> IR remote commands</td>
-     <td align="left">*70&#9166;</td>
+     <td align="left">*70&#9166;</td><td>3070</td>
     </tr>
     <tr>
      <td align="left">Toggle usage of volume knob</td>
-     <td align="left">*80&#9166;</td>
+     <td align="left">*80&#9166;</td><td>3080</td>
     </tr>
     <tr>
      <td align="left">Toggle usage of speed knob</td>
-     <td align="left">*81&#9166;</td>
+     <td align="left">*81&#9166;</td><td>3081</td>
     </tr>
     <tr>
      <td align="left">Say current IP address</td>
-     <td align="left">*90&#9166;</td>
+     <td align="left">*90&#9166;</td><td>3090</td>
     </tr>
     <tr>
      <td align="left">Reboot the device</td>
-     <td align="left">*64738&#9166;</td>
+     <td align="left">*64738&#9166;</td><td>n/a</td>
     </tr>
     <tr>
      <td align="left">Delete static IP address and AP WiFI password</td>
-     <td align="left">*123456&#9166;</td>
+     <td align="left">*123456&#9166;</td><td>n/a</td>
     </tr>
     <tr>
      <td align="left">Forget learned IR remote control</td>
-     <td align="left">*654321&#9166;</td>
+     <td align="left">*654321&#9166;</td><td>n/a</td>
     </tr>
 </table>
 
@@ -263,7 +266,7 @@ The flux sound can be permanently disabled, permanently enabled, or enabled for 
 - upon triggering a time travel,
 - after switching on the FC.
 
-The different modes are selected by typing *00 (disabled), *01 (enabled), *02 (enabled for 30 secs) or *03 (enabled for 60 secs), followed by OK. The power-up default is selected in the [Config Portal](#appendix-a-the-config-portal).
+The different modes are selected by typing *20 (disabled), *21 (enabled), *22 (enabled for 30 secs) or *23 (enabled for 60 secs), followed by OK. The power-up default is selected in the [Config Portal](#appendix-a-the-config-portal).
 
 ## Box lighting
 
@@ -271,7 +274,7 @@ The FC features connectors for box lights, ie LEDs that light up the inside of t
 
 As an alternative, one could use four pieces of 3W High-Power KEYES LED modules and drive them via the GPIO14 connector. As those draw quite much power, their power pins should therefore be connected to the power supply directly, and only the PWD input should be wired to the "IO14" pin of the "GPIO14" connector. If you use the GPIO14 connector for your box LEDs, check [this option](#-use-gpio14-for-box-lights) in the Config Portal.
 
-In normal operation, those LEDs are off. You can, however, configure a minimum box light level to light up the box a little bit if you find it too dark. This level can be chosen out of five, by entering *10 through *14 followed by OK.
+In normal operation, those LEDs are off. You can, however, configure a minimum box light level to light up the box a little bit if you find it too dark. This level can be chosen out of five, by entering *30 through *34 followed by OK.
 
 ## Time travel
 
@@ -361,7 +364,7 @@ Note that a wired connection only allows for synchronized time travel sequences,
 
 ### BTTF-Network ("BTTFN")
 
-The TCD can communicate with the FC wirelessly, via WiFi. It can send out information about a time travel and an alarm, and the FC queries the TCD for speed and some other data. Unlike with MQTT, no broker or other third party software is needed.
+The TCD can communicate with the FC wirelessly, via WiFi. It can send out information about a time travel and an alarm, and the FC queries the TCD for speed and some other data. Furthermore, the TCD's keypad can be used to remote-control the FC. Unlike with MQTT, no broker or other third party software is needed.
 
 ![BTTFN connection](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/93a9c471-d288-4a8f-87df-506ab8d5e619)
 
@@ -370,6 +373,7 @@ In order to connect your FC to the TCD using BTTFN, just enter the TCD's IP addr
 Afterwards, the FC and the TCD can communicate wirelessly and 
 - play time travel sequences in sync,
 - both play an alarm-sequence when the TCD's alarm occurs,
+- the FC can be remote controlled through the TCD's keypad (command codes 3xxx),
 - the FC queries the TCD for GPS speed if desired to adapt chase speed to GPS speed,
 - the FC queries the TCD for fake power and night mode, in order to react accordingly if so configured.
 
@@ -437,7 +441,7 @@ After the FC has restarted, re-enter the FC's Config Portal (while the TCD is po
   - select the TCD's access point name in the list at the top or enter *TCD-AP* into the *SSID* field; if you password-protected your TCD's AP, enter this password in the *password* field. Leave all other fields empty,
   - click on *Save*.
 
-Using this setup enables the FC to receive notifications about time travel and alarm wirelessly, and to query the TCD for data.
+Using this setup enables the FC to receive notifications about time travel and alarm wirelessly, and to query the TCD for data. Also, the TCD keypad can be used to remote-control the FC.
 
 In order to access the FC's Config Portal in your car, connect your hand held or computer to the TCD's WiFi access point ("TCD-AP"), and direct your browser to http://flux.local ; if that does not work, go to the TCD's keypad menu, press ENTER until "BTTFN CLIENTS" is shown, hold ENTER, and look for the FC's IP address there; then direct your browser to that IP by using the URL http://a.b.c.d (a-d being the IP address displayed on the TCD display).
 
