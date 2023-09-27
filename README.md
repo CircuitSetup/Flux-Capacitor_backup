@@ -123,11 +123,11 @@ Note that the status of the IR lock is saved 10 seconds after its last change, a
 
 In order to only disable the supplied IR remote control, check the option **_Disable supplied IR remote control_** in the [Config Portal](#-disable-supplied-ir-remote-control). In that case, any learned remote will still work.
 
-### IR remote reference
+### Remote control reference
 
 <table>
     <tr>
-     <td align="center" colspan="3">IR remote reference: Single key actions<br>[Code on TCD keypad]</td>
+     <td align="center" colspan="3">Single key actions<br>[Code on TCD keypad]</td>
     </tr>
     <tr>
      <td align="center">1<br>-</td>
@@ -170,9 +170,9 @@ Numbers in brackets are the code to be entered on the TCD keypad if a TCD is con
 
 <table>
     <tr>
-     <td align="center" colspan="3">IR/TCD remote reference: Special sequences<br>(&#9166; = OK key)</td>
+     <td align="center" colspan="3">Special sequences<br>(&#9166; = OK key)</td>
     </tr>
-   <tr><td>Function</td><td>IR sequence</td><td>Code on TCD</td></tr>
+   <tr><td>Function</td><td>Code on IR</td><td>Code on TCD</td></tr>
     <tr>
      <td align="left">Select original chase sequence</td>
      <td align="left">*10&#9166;</td><td>3010</td>
@@ -360,11 +360,13 @@ Connect GND and GPIO on the Flux Capacitor's "Time Travel" connector to the TCD 
     </tr>
 </table>
 
-Note that a wired connection only allows for synchronized time travel sequences, no other communication takes place.
+Next, head to the Config Portal and set the ooption **_TCD connected by wire_**. On the TCD, the option "Control props connected by wire" must be set.
+
+Note that a wired connection only allows for synchronized time travel sequences, no other communication takes place. Therefore I strongly recommend a wireless BTTFN connection, see immediately below.
 
 ### BTTF-Network ("BTTFN")
 
-The TCD can communicate with the FC wirelessly, via WiFi. It can send out information about a time travel and an alarm, and the FC queries the TCD for speed and some other data. Furthermore, the TCD's keypad can be used to remote-control the FC. Unlike with MQTT, no broker or other third party software is needed.
+The TCD can communicate with the FC wirelessly, via WiFi. It can send out information about a time travel and an alarm, and the FC queries the TCD for speed and some other data. Furthermore, the TCD's keypad can be used to remote-control the FC.
 
 ![BTTFN connection](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/93a9c471-d288-4a8f-87df-506ab8d5e619)
 
@@ -378,16 +380,6 @@ Afterwards, the FC and the TCD can communicate wirelessly and
 - the FC queries the TCD for fake power and night mode, in order to react accordingly if so configured.
 
 You can use BTTF-Network and MQTT at the same time, see immediately below.
-
-### Home Assistant/MQTT
-
-The other way of wireless communication is, of course, [Home Assistant/MQTT](#home-assistant--mqtt).
-
-If both TCD and FC are connected to the same broker, and the option **_Send event notifications_** is checked on the TCD's side, the FC will receive information on time travel and alarm and play their sequences in sync with the TCD. Unlike BTTFN, however, no other communication takes place.
-
-![MQTT connection](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/938c6bdd-f554-4e51-862e-9988e2339222)
-
-MQTT and BTTFN can co-exist. However, the TCD only sends out time travel and alarm notifications through either MQTT or BTTFN, never both. If you have other MQTT-aware devices listening to the TCD's public topic (bttf/tcd/pub) in order to react to time travel or alarm messages, use MQTT (ie check **_Send event notifications_**). If only BTTFN-aware devices are to be used, uncheck this option to use BTTFN as it has less latency.
 
 ## Home Assistant / MQTT
 
@@ -410,7 +402,11 @@ The FC can - to some extent - be controlled through messages sent to topic **btt
 
 ### Receive commands from Time Circuits Display
 
-The TCD can trigger a time travel and tell the FC about an alarm by sending messages to topic **bttf/tcd/pub**. The FC receives these commands and reacts accordingly.
+If both TCD and FC are connected to the same broker, and the option **_Send event notifications_** is checked on the TCD's side, the FC will receive information on time travel and alarm and play their sequences in sync with the TCD. Unlike BTTFN, however, no other communication takes place.
+
+![MQTT connection](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/938c6bdd-f554-4e51-862e-9988e2339222)
+
+MQTT and BTTFN can co-exist. However, the TCD only sends out time travel and alarm notifications through either MQTT or BTTFN, never both. If you have other MQTT-aware devices listening to the TCD's public topic (bttf/tcd/pub) in order to react to time travel or alarm messages, use MQTT (ie check **_Send event notifications_**). If only BTTFN-aware devices are to be used, uncheck this option to use BTTFN as it has less latency.
 
 ### Setup
 
@@ -554,6 +550,14 @@ Note that a wired connection only allows for synchronized time travel sequences,
 
 Also note that the process of [learning keys from an IR remote control](#ir-remote-control) requires this option to be unchecked. After learning keys is done, you can, of course, check this option again.
 
+Do NOT check this option if your TCD is connected wirelessly (BTTFN, MQTT).
+
+##### &#9654; TCD signals Time Travel without 5s lead
+
+Usually, the TCD signals a time travel with a 5 seconds lead, in order to give a prop a chance to play an acceletation sequence before the actual time travel takes place. Since this 5 second lead is unique to CircuitSetup props, and people sometimes want to connect third party props to the TCD, the TCD has the option of skipping this 5 seconds lead. That that is the case, and your Flux Capacitor is connected by wire, you need to set this option.
+
+If your FC is connected wirelessly, this option has no effect.
+
 ##### &#9654; IP address of TCD
 
 If you want to have your FC to communicate with a Time Circuits Display wirelessly ("BTTF-Network"), enter the IP address of the TCD here. Do NOT enter a host name here.
@@ -581,6 +585,10 @@ If other props are connected, they might bring their own time travel sound effec
 ##### &#9654; Skip Box Light animation
 
 Normally, the Box LEDs flash during the time travel sequence. If you prefer to instead have them constantly on during a time travel, check this option.
+
+##### &#9654; Play TCD-alarm sounds
+
+If a TCD is connected via BTTFN or MQTT, the FC visually signals when the TCD's alarm sounds. If you want the FC to play an alarm sound, check this option.
 
 #### Home Assistant / MQTT settings
 
