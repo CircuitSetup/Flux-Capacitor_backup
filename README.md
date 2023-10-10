@@ -2,8 +2,7 @@
 
 This repository holds the most current firmware for CircuitSetup's [Flux Capacitor Light & Sound PCB](https://circuitsetup.us/product/flux-capacitor-light-sound-pcb/).
 
-Here is a Flux Capacitor, built using the [Flux Capacitor Light & Sound PCB](https://circuitsetup.us/product/flux-capacitor-light-sound-pcb/), [Backing Board](https://circuitsetup.us/product/flux-capacitor-backing-board/), and [Window Kit]
-(https://circuitsetup.us/product/flux-capacitor-window-kit/):
+Here is a Flux Capacitor, built using the [Flux Capacitor Light & Sound PCB](https://circuitsetup.us/product/flux-capacitor-light-sound-pcb/), [Backing Board](https://circuitsetup.us/product/flux-capacitor-backing-board/), and [Window Kit](https://circuitsetup.us/product/flux-capacitor-window-kit/):
 ![My Flux Capacitor](https://github.com/realA10001986/Flux-Capacitor/assets/76924199/0754e0c0-e545-4122-8edf-0f7add41cd73)
 
 Features include
